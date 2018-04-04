@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>图片预加载--有序加载</title>
+  <style>
+    .box {
+      text-align: center;
+    }
+    .btn {
+      display: inline-block;
+      height: 30px;
+      line-height: 30px;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      padding: 0 10px;
+      margin-right: 50px;
+      color: #333;
+      text-decoration: none;
+      margin-bottom: 30px;
+    }
+    .btn:hover {
+      background-color: #eee;
+    }
+  </style>
+</head>
+<body>
+<div class="box">
+  <img src="http://dl.bizhi.sogou.com/images/2012/02/11/25025.jpg" alt="图片1" id="img" width="1200">
+  <p>
+    <a href="javascript: void(0);" class="btn" data-control="prev">上一页</a>
+    <a href="javascript: void(0);" class="btn" data-control="next">下一页</a>
+  </p>
+</div>
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script>
+  var imgs = [
+    'http://dl.bizhi.sogou.com/images/2012/02/11/25025.jpg',
+    'http://pic1.win4000.com/wallpaper/f/53bb9aa9c4eef.jpg',
+    'http://img.zcool.cn/community/03879005798abdc0000018c1b07f124.jpg',
+    'http://pic1.win4000.com/wallpaper/4/57b6a7f82383b.jpg',
+    // 'http://old.bz55.com/uploads/allimg/140717/1-140GF94204-50.jpg',
+    'http://pic1.5442.com/2013/0607/04/11.jpg'
+  ];
+  var len = imgs.length, index = 0, count = 0;
+  imgs.forEach(function(src, index) {
+    var imgObj = new Image();
+    imgObj.onload = function () {
+      count++;
+      if (count === len) {
+        console.log('all complete');
+      }
+    };
+    imgObj.src = src;
+  });
+  document.title = 1 + '/' + len;
+  $('.btn').on('click', function () {
+    if ($(this).data('control') === 'prev') { // 上一张
+      index = Math.max(0, --index);
+    } else { // 下一张
+      index = Math.min(len - 1, ++index);
+    }
+    document.title = (index + 1) + '/' + len;
+    $('#img').attr('src', imgs[index]);
+  })
+</script>
+</body>
+</html>
